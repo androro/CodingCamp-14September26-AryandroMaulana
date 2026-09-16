@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Chart.js CDN — must load before script.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- ── Header ──────────────────────────────────────────── -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1 class="app-title">💰 Budget Tracker</h1>
+        <p class="app-subtitle">Track your spending easily</p>
+      </div>
+      <!-- Optional Feature 3: Dark / Light Mode Toggle -->
+      <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </header>
+
+    <!-- ── Total Balance Card ───────────────────────────────── -->
+    <section class="balance-card" aria-label="Total spending summary">
+      <p class="balance-label">Total Spending</p>
+      <p class="balance-amount" id="totalAmount">Rp 0</p>
+    </section>
+
+    <!-- ── Main Grid ────────────────────────────────────────── -->
+    <main class="main-grid">
+
+      <!-- Left column: Form + List -->
+      <div class="left-col">
+
+        <!-- Add Transaction Form -->
+        <section class="card" aria-labelledby="formHeading">
+          <h2 id="formHeading" class="card-title">Add Transaction</h2>
+          <form id="transactionForm" novalidate>
+
+            <div class="form-group">
+              <label for="itemName">Item Name</label>
+              <input
+                type="text"
+                id="itemName"
+                placeholder="e.g. Lunch, Grab Bike…"
+                autocomplete="off"
+                maxlength="60"
+                aria-required="true"
+              />
+              <span class="field-error" id="itemNameError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="amount">Amount (Rp)</label>
+              <input
+                type="number"
+                id="amount"
+                placeholder="e.g. 25000"
+                min="0"
+                max="999999999999"
+                step="any"
+                aria-required="true"
+              />
+              <span class="field-error" id="amountError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category</label>
+              <!-- Optional Feature 1: Custom Categories -->
+              <div class="category-select-wrap">
+                <select id="category" aria-required="true">
+                  <option value="">— Select category —</option>
+                  <option value="Food">🍜 Food</option>
+                  <option value="Transport">🚌 Transport</option>
+                  <option value="Fun">🎮 Fun</option>
+                  <option value="Custom">✏️ Custom…</option>
+                </select>
+              </div>
+              <input
+                type="text"
+                id="customCategory"
+                class="hidden"
+                placeholder="Enter custom category name"
+                maxlength="30"
+                aria-label="Custom category name"
+              />
+              <span class="field-error" id="categoryError"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="addBtn">
+              + Add Transaction
+            </button>
+          </form>
+        </section>
+
+        <!-- Transaction List -->
+        <section class="card" aria-labelledby="listHeading">
+          <div class="list-header">
+            <h2 id="listHeading" class="card-title">Transactions</h2>
+            <!-- Optional Feature 2: Sort Transactions -->
+            <div class="sort-wrap">
+              <label for="sortSelect" class="sort-label">Sort:</label>
+              <select id="sortSelect" aria-label="Sort transactions">
+                <option value="date-desc">Newest</option>
+                <option value="date-asc">Oldest</option>
+                <option value="amount-asc">Amount: Low to High</option>
+                <option value="amount-desc">Amount: High to Low</option>
+                <option value="category-asc">Category: A–Z</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty-state" aria-live="polite">
+            <p>🧾 No transactions yet.<br />Add one above to get started!</p>
+          </div>
+
+          <ul
+            id="transactionList"
+            class="transaction-list"
+            aria-label="Transaction list"
+            role="list"
+          ></ul>
+        </section>
+
+      </div>
+
+      <!-- Right column: Chart only -->
+      <div class="right-col">
+
+        <!-- Pie Chart -->
+        <section class="card chart-card" aria-labelledby="chartHeading">
+          <h2 id="chartHeading" class="card-title">Spending by Category</h2>
+          <div class="chart-container">
+            <canvas
+              id="expenseChart"
+              class="hidden"
+              aria-label="Pie chart of spending by category"
+              role="img"
+            ></canvas>
+          </div>
+          <div id="chartEmpty" class="empty-state" aria-live="polite">
+            <p>📊 Add transactions to see the chart.</p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Data saved locally in your browser · No server required</p>
+    </footer>
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
